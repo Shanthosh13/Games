@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe Simple</title>
+<style>
+  body{display:flex;justify-content:center;align-items:center;height:100vh;background:#111;color:#fff;font-family:sans-serif;}
+  .board{display:grid;grid-template-columns:repeat(3,100px);grid-gap:10px;}
+  .cell{width:100px;height:100px;display:flex;justify-content:center;align-items:center;font-size:2.5rem;background:#222;cursor:pointer;border-radius:8px;}
+  .cell.win{background:#73907e;}
+</style>
+</head>
+<body>
+  <div class="board" id="board"></div>
+<script>
+  const board=document.getElementById('board');
+  let turn='s';
+  let cells=Array(9).fill(null);
+  const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  for(let i=0;i<9;i++){
+    const c=document.createElement('div');
+    c.className='cell';
+    c.addEventListener('click',()=>play(i,c));
+    board.appendChild(c);
+  }
+  function play(i,c){
+    if(cells[i]||winner())return;
+    cells[i]=turn;c.textContent=turn;
+    if(winner()){highlight(winner());setTimeout(()=>alert(turn+' wins!'),100);return;}
+    if(cells.every(Boolean))return alert('Draw!');
+    turn=turn==='s'?'O':'s';
+  }
+  function winner(){return wins.find(w=>w.every(i=>cells[i]===turn));}
+  function highlight(w){w.forEach(i=>board.children[i].classList.add('win'));}
+</script>
+</body>
+</html>
